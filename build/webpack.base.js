@@ -1,12 +1,26 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const shell = require('shelljs')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+const indexList = shell.find('./src/pages').filter(file => file.match(/\.js$/))
+let entry = {}
+let htmlPlugins = []
+indexList.forEach(file => {
+  const key = /\/pages\/(\w+)\/index\.js$/.exec(file)[1]
+  entry[key] = './' + file
+  htmlPlugins.push({
+    template: './' + file.replace(/\.js$/, '.html'),
+    filename: `./${key}.html`,
+    title: `css3-${key}`
+  })
+})
+
 module.exports = {
-  entry: './src/index.js',
+  entry,
   output: {
     filename: 'js/[name]_[hash:6].js',
     path: path.resolve('dist')
@@ -60,9 +74,6 @@ module.exports = {
     }
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: './index.html'
-    })
+    ...htmlPlugins.map(item => new HtmlWebpackPlugin(item))
   ]
 }

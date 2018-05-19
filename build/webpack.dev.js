@@ -9,6 +9,7 @@ module.exports = merge(base, {
     hot: true,
     host: 'localhost',
     open: true,
+    openPage: 'cube.html',
     quiet: true,
     proxy: {
       '/api': {
@@ -26,6 +27,8 @@ module.exports = merge(base, {
             loader: 'style-loader'
           }, {
             loader: 'css-loader'
+          }, {
+            loader: 'postcss-loader'
           }
         ]
       },
@@ -38,6 +41,8 @@ module.exports = merge(base, {
             loader: 'css-loader'
           }, {
             loader: 'less-loader'
+          }, {
+            loader: 'postcss-loader'
           }
         ]
       }
