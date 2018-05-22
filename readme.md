@@ -1,15 +1,7 @@
-# wtwd-app-h5
+# css3 - 3d
 
-- webpack4多页应用
 
-> 依赖
-- webpack@4
-- highcharts
-- art-template
-- typescript 
-- less
-
-## install
+## start
 
 ```
 $ cnpm i
