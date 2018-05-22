@@ -1,14 +1,12 @@
-import 'normalize.css'
-import './index.less'
 import $ from 'jquery'
 const { tan, PI, atan, max, min, pow, sqrt } = Math
 
 //禁用微信的下拉
 $('body').on('touchmove', e => e.preventDefault())
 
-const BG_WIDTH = 129
-const BG_HEIGHT = 1170
-const BG_NUMBER = 20
+const BG_WIDTH = 3000
+const BG_HEIGHT = 3000
+const BG_NUMBER = 4
 const PER_ANGLE = 360 / BG_NUMBER
 
 const translateZ = (({width, number}) => (width/tan(PI/number)) >> 1)({
@@ -16,29 +14,33 @@ const translateZ = (({width, number}) => (width/tan(PI/number)) >> 1)({
   number: BG_NUMBER
 })
 
-console.log(translateZ)
-
 const view = $("#stage")
 const viewW = view.width()
 const viewH = view.height()
 
-const walls = require.context('./image', true, /p\d+\.png$/)
+const walls = require.context('./image', true, /[0-3]\.jpg$/)
+const wall = walls.keys().map((item, i) => `<div style="
+  background: url(${walls(item)}) 0 0/cover no-repeat;
+  position: absolute;
+  width: ${BG_WIDTH}px;
+  height: ${BG_HEIGHT}px;
+  left: ${(viewW - BG_WIDTH) / 2}px;
+  top: ${(viewH - BG_HEIGHT) / 2}px;
+  transform: rotateY(${180 - i * PER_ANGLE}deg) translateZ(${-translateZ +10}px)
+"></div>`).join('')
 
-const wall = walls.keys()
-  .sort((a, b) => /\d+/.exec(a)[0] - /\d+/.exec(b)[0])
-  .map((item, i) => `<div style="
-    background: url(${walls(item)}) 0 0/cover no-repeat;
-    position: absolute;
-    width: ${BG_WIDTH}px;
-    height: ${BG_HEIGHT}px;
-    left: ${(viewW - BG_WIDTH) / 2}px;
-    top: ${(viewH - BG_HEIGHT) / 2}px;
-    transform: rotateY(${180 - i * PER_ANGLE}deg) translateZ(${-translateZ +10}px);
-    backface-visibility: hidden;
-  "></div>`)
-  .join('')
+const skyAndGround = require.context('./image', true, /[4-5]\.jpg$/)
+const sg =skyAndGround.keys().map((item, i) => `<div style="
+  background: url(${skyAndGround(item)}) 0 0/cover no-repeat;
+  position: absolute;
+  width: ${BG_WIDTH}px;
+  height: ${BG_HEIGHT}px;
+  left: ${(viewW - BG_WIDTH) / 2}px;
+  top: ${(viewH - BG_HEIGHT) / 2}px;
+  transform: rotateX(${(i ? 1: -1) * 90}deg) rotateZ(90deg) translateZ(${-translateZ+10}px)
+"></div>`).join('')
 
-$('.container').html(wall)
+$('.cube').html(wall + sg)
 
 let lastMouseX = 0
 let lastMouseY = 0
@@ -96,7 +98,7 @@ function dragRotate() {
   // aimAngleX(Y)的值是通过【拖拽位移换算为相应角度得到】
   aimAngleX = ( 180 / PI * (atan((curMouseX - lastMouseX) / translateZ)) + lastAngleX )
   // 限制上下旋转监督在30°以内
-  aimAngleY = max(-45, min((180 / PI * atan((curMouseY - lastMouseY) / (sqrt(pow(BG_HEIGHT / 2, 2) + pow(translateZ, 2))*1.5)) + lastAngleY), 30))
+  aimAngleY = max(-60, min((180 / PI * atan((curMouseY - lastMouseY) / (sqrt(pow(BG_HEIGHT / 2, 2) + pow(translateZ, 2))*1.5)) + lastAngleY), 60))
 }
 
 function go() {

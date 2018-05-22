@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=640, target-densitydpi=device-dpi, user-scalable=no">
+  <title>全景</title>
+  <style>
+    #view{
+      width: 800px;
+      height: 500px;
+      overflow: hidden;
+      perspective: 420px;
+
+    }
+    #stage{
+      width: 6000px;
+      height: 6000px;
+      margin-left: -2600px;
+      margin-top: -2750px;
+      transform-origin: 3000px 3000px;
+      transform-style: preserve-3d;
+    }
+  </style>
+</head>
+<body>
+  <div id="view">
+    <div id="stage">
+      <div class="cube"></div>
+    </div>
+  </div>
+</body>
+</html>

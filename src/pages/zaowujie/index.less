@@ -1,6 +1,28 @@
 body {
   height: 100vh;
   background-image: url('../../assets/bg.jpg');
-  background-size: 100% 100%;
+  background-size: cover;
   background-repeat: no-repeat;
+}
+
+#view{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 250px;
+}
+
+@width: 1000px;
+@height: 1170px;
+#stage{
+  width: @width;
+  height: @height;
+  transform-style: preserve-3d;
+}
+
+.transform-z {
+  transform: translateZ(47px);
 }

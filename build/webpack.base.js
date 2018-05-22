@@ -15,7 +15,8 @@ indexList.forEach(file => {
   htmlPlugins.push({
     template: './' + file.replace(/\.js$/, '.html'),
     filename: `./${key}.html`,
-    title: `css3-${key}`
+    title: `css3-${key}`,
+    chunks: [key, 'vendor']
   })
 })
 
